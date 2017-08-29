@@ -1,5 +1,6 @@
+
 angular.module('sparrowFit')
-.controller('AddGoalCtrl', function($scope, $http) {
+.controller('logWorkoutCtrl', function($scope, $http) {
   $scope.workouts = {};
 
   // make GET request to populate drop-down list
@@ -7,33 +8,28 @@ angular.module('sparrowFit')
     .then(function(res) {
       $scope.workouts = res.data;
       $scope.selectedWorkout = $scope.workouts[0];
-    })
+    });
 
-  this.goal = {};
+  this.workoutHistory = {};
 
-  this.addGoal = function() {
-    this.goal.workoutId = $scope.selectedWorkout._id;
-    this.goal.goalNumber = Number(this.goalNumber);
-    this.goal.startDate = Date.now().valueOf();
-
-    if (this.goalEndDate) {
+  this.logWorkout = function() {
+    if (this.date) {
       // assign primitive value of specified date
-      this.goal.endDate = this.goalEndDate.valueOf();
+      this.workoutHistory.date = this.date.valueOf();
     } else {
-      // show danger alert if end date is not specified
+      // show danger alert if date is not specified
       $scope.onFailure = true;
       return;
     }
-
-    console.log('object to be sent to server: ', this.goal);
+    this.workoutHistory.number = this.value;
 
     // reset alert
     $scope.onSuccess = false;
     $scope.onFailure = false;
 
     // make POST request to server
-    $http.post('/api/goals', this.goal)
-      .then(function(res) {
+    $http.post(`/api/workouts/${$scope.selectedWorkout._id}/logs`, this.workoutHistory)
+      .then(function() {
         // on success, show success alert
         $scope.onSuccess = true;
       }, function() {
@@ -42,7 +38,7 @@ angular.module('sparrowFit')
       });
   };
 })
-.component('addGoal', {
-  controller: 'AddGoalCtrl',
-  templateUrl: 'client/components/goal-component/addGoal/addGoal.html'
+.component('logWorkout', {
+  controller: 'logWorkoutCtrl',
+  templateUrl: 'client/components/workout-component/logWorkout/logWorkout.html'
 });

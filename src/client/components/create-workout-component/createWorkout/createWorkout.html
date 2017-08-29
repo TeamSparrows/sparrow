@@ -1,7 +1,24 @@
 <div class="container">
-  <ul>
-    <li><a ui-sref="createWorkout.timed">Create Timed Workout</a></li>
-    <li><a ui-sref="createWorkout.untimed">Create UnTimed Workout</a></li>
-  </ul>
+  <h1 class="page-header">Create Workout</h1>
+  <div class="col-lg-6 mb-6 form">
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" class="form-control" ng-model="$ctrl.name" placeholder="Running"/>
+      <label>Default Number</label>
+      <input type="text" class="form-control" ng-model="$ctrl.unitValue" placeholder="0" />
+      <label>Unit</label>
+      <input type="text" class="form-control" ng-model="$ctrl.unitName" placeholder="km/mi" />
+    </div>
+    <div>
+      <button type="submit" class="btn btn-default" ng-click="$ctrl.addWorkout()">Create</button>
+    </div>
+    </br>
+    <div ng-show="onSuccess" class="alert alert-success">
+      <strong>Success!</strong> {{onSuccess}} workout successfully created.
+    </div>
+    <div ng-show="onFailure" class="alert alert-danger">
+      <strong>Failure!</strong> Failed to create workout.
+    </div>
+  </div>
   <ui-view></ui-view>
 </div>

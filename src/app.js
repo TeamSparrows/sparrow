@@ -11,7 +11,7 @@ angular // add module dependencies and configure it
         });
       })
       .catch(console.error);
-      
+
     $stateProvider
       .state('home', {
         url:'/home',
@@ -19,14 +19,9 @@ angular // add module dependencies and configure it
         controller: 'homeController as home'
       })
       .state('profile', {
+        name: 'profile',
         url: '/profile',
-        templateUrl: 'login/profile/profile-tpl.html',
-        controller: 'profileController as user'
-      })
-      .state('application', {
-        url: '/application',
-        templateUrl: 'login/application/application-tpl.html',
-        controller: 'applicationController'
+        component: 'profile'
       })
       .state('design', {
         url: '/design',
@@ -40,44 +35,14 @@ angular // add module dependencies and configure it
         component: 'createWorkout',
       })
       .state({
-        name:'createWorkout.timed',
-        url: '/timed',
-        component: 'timed',
-      })
-      .state({
-        name: 'createWorkout.untimed',
-        url: '/untimed',
-        component: 'untimed'
-      })
-      .state({
         name: 'workout',
         url: '/workout',
         component: 'workout'
       })
       .state({
-        name:'goals',
+        name: 'goals',
         url:'/goals',
-        component: 'goals',
-        resolve : {
-          resolveGoal : function (goalService) {
-            var goals=goalService.getAllGoals();
-            //console.log( goals);
-            return goals;
-          }
-        }
-      })
-      .state({
-        name: 'goal',
-        url: '/{goalID}',
-        parent:'goalList',
-        component : 'goal',
-        resolve : {
-          resolveGoalItem : function (goalService,$transition$) {
-            var goalDetailAfterUSerClick= goalService.getGoal($transition$.params().goalID);
-            console.log('in resolve goal, goalDetailAfterUSerClick = '+JSON.stringify(goalDetailAfterUSerClick));
-            return goalDetailAfterUSerClick;
-          }
-        }
+        component: 'goals'
       })
       .state({
         name :'addGoal',
@@ -90,43 +55,19 @@ angular // add module dependencies and configure it
         url:'/panel',
         parent :'goals',
         component : 'panel',
-        resolve : {
-          resolvePanel : function (goalService) {
-            return '!!!!! implement me !!!!!';
-          }
-        }
       })
       .state({
-        name :'goalList',
-        url:'/goallist',
-        parent :'goals',
-        component :'goalList',
-        resolve : {
-          resolveGoalList : function (goalService) {
-            // move the content of golas/resolve func in here
-            var goals=goalService.getAllGoals();
-            //console.log( goals);
-            return goals;
-          }
-        }
+        name:'logWorkout',
+        url:'/log',
+        parent:'workout',
+        component:'logWorkout'
       })
       .state({
-        name :'history',
-        url:'/history',
-        parent :'goals',
-        component : 'history',
-        resolve : {
-          resolveHistory : function (goalService) {
-            return '!!!!! implement me !!!!!';
-          }
-        }
-      })
-
-      ;
-
-
-
-
+        name:'editWorkout',
+        url:'/edit',
+        parent:'workout',
+        component:'editWorkout'
+      });
 
 
 
@@ -184,7 +125,7 @@ angular // add module dependencies and configure it
     // fires anytime routing changes or page refreshes
     // will use to check users authentication state
     $rootScope.$on('$locationChangeStart', function() {
-      console.log('run ran!');
+      // console.log('run ran!');
       // console.log('token expired?', jwtHelper.isTokenExpired(token))
       var token = store.get('id_token');
       if (token) { // if there is a token

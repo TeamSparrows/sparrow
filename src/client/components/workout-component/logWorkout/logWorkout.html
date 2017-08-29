@@ -1,0 +1,34 @@
+<div class="row" style="padding-top: 15px; margin: 10px auto;">
+  <div class="col-lg-6 mb-6 form">
+    <form>
+      <div class="form-group">
+        <label>Workout to Log</label>
+        <select ng-model="selectedWorkout" ng-options="workout.name for workout in workouts" class="form-control">
+          <option value="{{workout}}"></option>
+        </select>
+      </div>
+      <div ng-if="selectedWorkout">
+        <div class="form-group">
+          <label>Date</label>
+          <input ng-model="$ctrl.date" type="date" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>Number</label>
+          <input ng-model="$ctrl.value" type="text" class="form-control" placeholder="{{selectedWorkout.unitValue}}"/>
+        </div>
+        <label>Unit: {{selectedWorkout.unitName}}</label>
+        </br>
+        <div>
+          <button ng-click="$ctrl.logWorkout()" type="submit" class="btn btn-default">Log</button>
+        </div>
+        </br>
+        <div ng-show="onSuccess" class="alert alert-success">
+          <strong>Success!</strong> Workout successfully logged.
+        </div>
+        <div ng-show="onFailure" class="alert alert-danger">
+          <strong>Failure!</strong> Failed to log workout.
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
